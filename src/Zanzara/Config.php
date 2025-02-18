@@ -31,20 +31,20 @@ class Config
 
     private string $botToken;
 
-    private ?LoopInterface $loop;
+    private ?LoopInterface $loop = null;
 
-    private ?CacheInterface $cache;
+    private ?CacheInterface $cache = null;
 
     private bool $useReactFileSystem = false;
 
-    private ?Container $container;
+    private ?Container $container = null;
 
     /**
      * @var string|UpdateModeInterface
      */
     private $updateMode = self::POLLING_MODE;
 
-    private ?string $parseMode;
+    private ?string $parseMode = null;
 
     private string $updateStream = 'php://input';
 
@@ -83,7 +83,7 @@ class Config
      */
     private array $pollingAllowedUpdates = [];
 
-    private ?LoggerInterface $logger;
+    private ?LoggerInterface $logger = null;
 
     private bool $disableZanzaraLogger = false;
 
@@ -101,7 +101,7 @@ class Config
 
     private ?float $conversationTtl = 60 * 60 * 24;
 
-    private ?Connector $connector;
+    private ?Connector $connector = null;
 
     /**
      * @since 0.5.1
@@ -112,14 +112,14 @@ class Config
      *
      * @since 0.5.1
      */
-    private ?string $proxyUrl;
+    private ?string $proxyUrl = null;
 
     /**
      * @since 0.5.1
      */
     private array $proxyHttpHeaders = [];
 
-    private ?Browser $browser;
+    private ?Browser $browser = null;
 
     private string $contextClass = Context::class;
 
