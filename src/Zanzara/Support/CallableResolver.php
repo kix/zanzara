@@ -17,10 +17,9 @@ use Zanzara\Middleware\MiddlewareInterface;
  */
 trait CallableResolver
 {
-
     /**
      * Check and resolve a callable.
-     * @param $callback
+     * @param callable $callback
      * @return array|callable
      * @throws DependencyException
      * @throws NotFoundException

@@ -14,23 +14,15 @@ use JsonMapper_Exception;
  */
 class ZanzaraMapper
 {
+    public function __construct(
+        private JsonMapper $jsonMapper
+    ) {}
 
     /**
-     * @var JsonMapper
-     */
-    private $jsonMapper;
-
-    /**
-     * @param JsonMapper $jsonMapper
-     */
-    public function __construct(JsonMapper $jsonMapper)
-    {
-        $this->jsonMapper = $jsonMapper;
-    }
-
-    /**
+     * @TODO Why not just always decode into array?
+     *
      * @param string $json
-     * @param $class
+     * @param string $class
      * @return mixed
      * @throws JsonMapper_Exception
      */

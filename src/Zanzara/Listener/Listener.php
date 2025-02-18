@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Zanzara\Listener;
 
+use Closure;
 use Psr\Container\ContainerInterface;
 use Zanzara\Context;
 use Zanzara\Middleware\MiddlewareCollector;
@@ -16,29 +17,19 @@ use Zanzara\Middleware\MiddlewareNode;
  */
 class Listener extends MiddlewareCollector implements MiddlewareInterface
 {
-
-    /**
-     * @var string|null
-     */
-    protected $id;
+    protected ?string $id = null;
 
     /**
      * @var callable
      */
     protected $callback;
 
-    /**
-     * @var array
-     */
-    protected $parameters = [];
+    protected array $parameters = [];
+
+    protected array $filters = [];
 
     /**
-     * @var array
-     */
-    protected $filters = [];
-
-    /**
-     * @param  $callback
+     * @param Closure $callback
      * @param ContainerInterface $container
      * @param string|null $id
      * @param array $filters
@@ -57,35 +48,23 @@ class Listener extends MiddlewareCollector implements MiddlewareInterface
     /**
      * @inheritDoc
      */
-    public function handle(Context $ctx, $next)
+    public function handle(Context $ctx, $next): void
     {
         call_user_func($this->callback, $ctx, ...array_merge($this->parameters, [$next]));
     }
 
-    /**
-     * @return MiddlewareNode
-     */
     public function getTip(): MiddlewareNode
     {
         return $this->tip;
     }
 
-    /**
-     * @param array $parameters
-     * @return Listener
-     */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
-        return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getFilters(): array
     {
         return $this->filters;
     }
-
 }

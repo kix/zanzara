@@ -7,14 +7,9 @@ namespace Zanzara\UpdateMode;
 use JsonMapper_Exception;
 use Zanzara\Telegram\Type\Update;
 
-/**
- *
- */
 class Webhook extends BaseWebhook
 {
-
     /**
-     * @inheritDoc
      * @throws JsonMapper_Exception
      */
     public function run(): void

@@ -43,6 +43,7 @@ use Zanzara\Telegram\Type\User;
  * @method Chat|null getEffectiveChat()
  *
  * @see Update
+ * @TODO Chat data items seem to be out of scope
  */
 class Context
 {
@@ -50,25 +51,13 @@ class Context
 
     /**
      * Array used to pass data between middleware.
-     *
-     * @var array
      */
-    protected $data = [];
+    protected array $data = [];
 
-    /**
-     * @var ZanzaraCache
-     */
-    protected $cache;
+    protected ZanzaraCache $cache;
 
-    /**
-     * @var ConversationManager
-     */
-    protected $conversationManager;
+    protected ConversationManager $conversationManager;
 
-    /**
-     * @param Update $update
-     * @param ContainerInterface $container
-     */
     public function __construct(Update $update, ContainerInterface $container)
     {
         $this->update = $update;
@@ -80,7 +69,7 @@ class Context
 
     /**
      * @param string $key
-     * @param $value
+     * @param mixed $value
      */
     public function set(string $key, $value): void
     {
@@ -97,8 +86,9 @@ class Context
     }
 
     /**
-     * @param $name
-     * @param $arguments
+     * TODO: Arguments are not spread
+     * @param string $name
+     * @param array $arguments
      * @return mixed
      */
     public function __call($name, $arguments)
@@ -106,9 +96,6 @@ class Context
         return $this->update->$name($arguments);
     }
 
-    /**
-     * @return Update|null
-     */
     public function getUpdate(): ?Update
     {
         return $this->update;
@@ -159,11 +146,8 @@ class Context
      * $ctx->getChatDataItem('age')->then(function($age) {
      *
      * });
-     *
-     * @param $key
-     * @return PromiseInterface
      */
-    public function getChatDataItem($key): PromiseInterface
+    public function getChatDataItem(string $key): PromiseInterface
     {
         $chatId = $this->update->getEffectiveChat()->getId();
         return $this->cache->getChatDataItem($chatId, $key);
@@ -182,7 +166,7 @@ class Context
      * @param $ttl
      * @return PromiseInterface
      */
-    public function setChatDataItem($key, $data, $ttl = false): PromiseInterface
+    public function setChatDataItem(string $key, $data, ?float $ttl = null): PromiseInterface
     {
         $chatId = $this->update->getEffectiveChat()->getId();
         return $this->cache->setChatDataItem($chatId, $key, $data, $ttl);
@@ -230,12 +214,10 @@ class Context
      *
      * });
      *
-     * @param $key
-     * @param $data
-     * @param $ttl
+     * @param mixed $data
      * @return PromiseInterface
      */
-    public function setUserDataItem($key, $data, $ttl = false): PromiseInterface
+    public function setUserDataItem(string $key, $data, ?float $ttl = null): PromiseInterface
     {
         $userId = $this->update->getEffectiveUser()->getId();
         return $this->cache->setUserDataItem($userId, $key, $data, $ttl);
@@ -248,11 +230,8 @@ class Context
      * $ctx->deleteUserDataItem('age')->then(function($result) {
      *
      * });
-     *
-     * @param $key
-     * @return PromiseInterface
      */
-    public function deleteUserDataItem($key): PromiseInterface
+    public function deleteUserDataItem(string $key): PromiseInterface
     {
         $userId = $this->update->getEffectiveUser()->getId();
         return $this->cache->deleteUserDataItem($userId, $key);
@@ -267,12 +246,10 @@ class Context
      *
      * });
      *
-     * @param $key
-     * @param $data
-     * @param $ttl
+     * @param mixed $data
      * @return PromiseInterface
      */
-    public function setGlobalDataItem($key, $data, $ttl = false): PromiseInterface
+    public function setGlobalDataItem(string $key, $data, ?float $ttl = null): PromiseInterface
     {
         return $this->cache->setGlobalDataItem($key, $data, $ttl);
     }
@@ -286,10 +263,9 @@ class Context
      *
      * });
      *
-     * @param $key
      * @return PromiseInterface
      */
-    public function getGlobalDataItem($key): PromiseInterface
+    public function getGlobalDataItem(string $key): PromiseInterface
     {
         return $this->cache->getGlobalDataItem($key);
     }
@@ -302,45 +278,25 @@ class Context
      * $ctx->deleteGlobalDataItem('age')->then(function($result) {
      *
      * });
-     *
-     * @param $key
-     * @return PromiseInterface
      */
-    public function deleteGlobalDataItem($key): PromiseInterface
+    public function deleteGlobalDataItem(string $key): PromiseInterface
     {
         return $this->cache->deleteGlobalDataItem($key);
     }
 
     /**
      * Wipe entire cache.
-     *
-     * @return PromiseInterface
      */
     public function wipeCache(): PromiseInterface
     {
         return $this->cache->clear();
     }
 
-    /**
-     * Get container instance
-     * @return ContainerInterface
-     */
-    public function getContainer(): ContainerInterface
-    {
-        return $this->container;
-    }
-
-    /**
-     * @return LoopInterface
-     */
     public function getLoop(): LoopInterface
     {
         return $this->container->get(LoopInterface::class);
     }
 
-    /**
-     * @return bool
-     */
     public function isCallbackQuery(): bool
     {
         return $this->getCallbackQuery() !== null;

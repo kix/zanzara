@@ -10,15 +10,8 @@ use Zanzara\Context;
 use Zanzara\Telegram\Type\MessageEntity;
 use Zanzara\Zanzara;
 
-/**
- *
- */
 class CommandTest extends TestCase
 {
-
-    /**
-     *
-     */
     public function testCommand()
     {
         $config = new Config();
@@ -33,7 +26,7 @@ class CommandTest extends TestCase
             $this->assertSame(52259544, $update->getUpdateId());
             $this->assertSame(23756, $message->getMessageId());
             $this->assertSame(222222222, $message->getFrom()->getId());
-            $this->assertSame(false, $message->getFrom()->isBot());
+            $this->assertFalse($message->getFrom()->isBot());
             $this->assertSame('Michael', $message->getFrom()->getFirstName());
             $this->assertSame('mscott', $message->getFrom()->getUsername());
             $this->assertSame('it', $message->getFrom()->getLanguageCode());
@@ -54,9 +47,6 @@ class CommandTest extends TestCase
         $bot->run();
     }
 
-    /**
-     *
-     */
     public function testText()
     {
         $config = new Config();
@@ -70,7 +60,7 @@ class CommandTest extends TestCase
             $this->assertSame(52259544, $ctx->getUpdateId());
             $this->assertSame(23756, $message->getMessageId());
             $this->assertSame(222222222, $message->getFrom()->getId());
-            $this->assertSame(false, $message->getFrom()->isBot());
+            $this->assertFalse($message->getFrom()->isBot());
             $this->assertSame('Michael', $message->getFrom()->getFirstName());
             $this->assertSame('mscott', $message->getFrom()->getUsername());
             $this->assertSame('it', $message->getFrom()->getLanguageCode());
@@ -99,7 +89,7 @@ class CommandTest extends TestCase
             $this->assertSame(52259544, $update->getUpdateId());
             $this->assertSame(23756, $message->getMessageId());
             $this->assertSame(222222222, $message->getFrom()->getId());
-            $this->assertSame(false, $message->getFrom()->isBot());
+            $this->assertFalse($message->getFrom()->isBot());
             $this->assertSame('Michael', $message->getFrom()->getFirstName());
             $this->assertSame('mscott', $message->getFrom()->getUsername());
             $this->assertSame('it', $message->getFrom()->getLanguageCode());
@@ -121,5 +111,4 @@ class CommandTest extends TestCase
 
         $bot->run();
     }
-
 }

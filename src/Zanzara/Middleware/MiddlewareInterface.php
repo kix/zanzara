@@ -12,10 +12,9 @@ use Zanzara\Context;
  */
 interface MiddlewareInterface
 {
-
     /**
      * @param Context $ctx
-     * @param $next
+     * @param mixed $next
      */
     public function handle(Context $ctx, $next);
 

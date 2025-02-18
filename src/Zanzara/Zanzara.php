@@ -19,36 +19,16 @@ use Zanzara\Listener\ListenerResolver;
 use Zanzara\Telegram\Telegram;
 use Zanzara\UpdateMode\ReactPHPWebhook;
 
-/**
- *
- */
 class Zanzara extends ListenerResolver
 {
+    private Config $config;
 
-    /**
-     * @var Config
-     */
-    private $config;
+    private mixed $telegram;
 
-    /**
-     * @var Telegram
-     */
-    private $telegram;
+    private ?LoopInterface $loop = null;
 
-    /**
-     * @var LoopInterface
-     */
-    private $loop;
+    private ZanzaraCache $cache;
 
-    /**
-     * @var ZanzaraCache
-     */
-    private $cache;
-
-    /**
-     * @param string $botToken
-     * @param Config|null $config
-     */
     public function __construct(string $botToken, ?Config $config = null)
     {
         $this->config = $config ?? new Config();
@@ -80,7 +60,9 @@ class Zanzara extends ListenerResolver
         if ($this->config->isReactFileSystem()) {
             $this->container->set(\React\Filesystem\Filesystem::class, \React\Filesystem\Filesystem::create($this->loop));
         }
-        $this->cache = $this->container->get(ZanzaraCache::class);
+        $cache = $this->container->get(ZanzaraCache::class);
+        assert($cache instanceof ZanzaraCache);
+        $this->cache = $cache;
         $this->conversationManager = $this->container->get(ConversationManager::class);
         $this->container->set(Zanzara::class, $this);
     }
@@ -110,22 +92,6 @@ class Zanzara extends ListenerResolver
     }
 
     /**
-     * @return Server
-     */
-    public function getServer(): Server
-    {
-        return $this->container->get(ReactPHPWebhook::class)->getServer();
-    }
-
-    /**
-     * @return Container
-     */
-    public function getContainer(): Container
-    {
-        return $this->container;
-    }
-
-    /**
      * Sets an item of the global data.
      * This cache is not related to any chat or user.
      *
@@ -134,12 +100,10 @@ class Zanzara extends ListenerResolver
      *
      * });
      *
-     * @param $key
-     * @param $data
-     * @param $ttl
-     * @return PromiseInterface
+     * @param string $key
+     * @param mixed $data
      */
-    public function setGlobalDataItem($key, $data, $ttl = false): PromiseInterface
+    public function setGlobalDataItem($key, $data, ?float $ttl = null): PromiseInterface
     {
         return $this->cache->setGlobalDataItem($key, $data, $ttl);
     }

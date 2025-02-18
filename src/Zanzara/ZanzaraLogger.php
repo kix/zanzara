@@ -126,5 +126,4 @@ class ZanzaraLogger
     {
         $this->error($this->getNotAuthorizedRequestMethod());
     }
-
 }

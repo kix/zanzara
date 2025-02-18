@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Zanzara\Listener;
 
+use Closure;
 use DI\DependencyException;
 use DI\NotFoundException;
 use Psr\Container\ContainerInterface;
@@ -33,6 +34,7 @@ use Zanzara\Telegram\Type\WebApp\WebAppData;
 /**
  * Class ListenerCollector
  * @package Zanzara\Listener
+ * @TODO Is `Closure $callback` a valid typehint for $callable`s?
  */
 abstract class ListenerCollector
 {
@@ -42,7 +44,7 @@ abstract class ListenerCollector
      * to keep allow regex with quantifiers as command/text
      * listeners.
      */
-    protected const PARAMETER_REGEX = '/\{((?:(?!\d+,?\d+?)\w)+?)\}/miu';
+    protected const string PARAMETER_REGEX = '/\{((?:(?!\d+,?\d+?)\w)+?)\}/miu';
 
     /**
      * Associative array for listeners.
@@ -63,25 +65,17 @@ abstract class ListenerCollector
      *          Listener()
      *      ]
      * ]
-     *
-     * @var array
      */
-    protected $listeners = [];
+    protected array $listeners = [];
 
     /**
      * @var ContainerInterface
      */
     protected $container;
 
-    /**
-     * @var array
-     */
-    protected $middleware = [];
+    protected array $middleware = [];
 
-    /**
-     * @var Listener
-     */
-    protected $onException;
+    protected ?Listener $onException = null;
 
     /**
      * Listen for the specified command.
@@ -91,7 +85,7 @@ abstract class ListenerCollector
      * Eg. $bot->onCommand('start {myParam}', function(Context $ctx, $myParam) {});
      *
      * @param string $command
-     * @param $callback
+     * @param Closure $callback
      * @param array $filters eg. ['chat_type' => 'group']
      * @return MiddlewareCollector
      * @throws DependencyException
@@ -118,7 +112,7 @@ abstract class ListenerCollector
      * Eg. $bot->onText('Hello {name}', function(Context $ctx, $name) {});
      *
      * @param string $text
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters eg. ['chat_type' => 'group']
      * @return MiddlewareCollector
      * @throws DependencyException
@@ -138,7 +132,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onMessage(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -158,7 +152,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onReplyToMessage(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -178,7 +172,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onEditedMessage(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -204,7 +198,7 @@ abstract class ListenerCollector
      * Eg. $bot->onCbQueryText('Hello {name}', function(Context $ctx, $name) {});
      *
      * @param string $text
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -228,7 +222,7 @@ abstract class ListenerCollector
      * $bot->onCbQueryData(['acc.'], function(Context $ctx) {});
      *
      * @param array $data
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -251,7 +245,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onCbQuery(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -271,7 +265,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onShippingQuery(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -291,7 +285,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onPreCheckoutQuery(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -311,7 +305,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onSuccessfulPayment(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -331,7 +325,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onPassportData(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -351,7 +345,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onInlineQuery(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -371,7 +365,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onChosenInlineResult(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -391,7 +385,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onChannelPost(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -409,9 +403,9 @@ abstract class ListenerCollector
      * Listen for an edited channel post.
      * You can call this function more than once, every callback will be executed.
      *
-     * Eg. $bot->onEditedChannelPost(function(Context $ctx) {});
+     * E.g. $bot->onEditedChannelPost(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -431,7 +425,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onPoll(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -451,7 +445,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onPollAnswer(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -469,9 +463,9 @@ abstract class ListenerCollector
      * Listen for a chat join request.
      * You can call this function more than once, every callback will be executed.
      *
-     * Eg. $bot->onChatJoinRequest(function(Context $ctx) {});
+     * E.g. $bot->onChatJoinRequest(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -489,9 +483,9 @@ abstract class ListenerCollector
      * Listen for a chat member updated.
      * You can call this function more than once, every callback will be executed.
      *
-     * Eg. $bot->onChatMemberUpdated(function(Context $ctx) {});
+     * E.g. $bot->onChatMemberUpdated(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -510,7 +504,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onWebAppData(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -529,7 +523,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onUserShared(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -548,7 +542,7 @@ abstract class ListenerCollector
      *
      * Eg. $bot->onChatShared(function(Context $ctx) {});
      *
-     * @param  $callback
+     * @param Closure $callback
      * @param array $filters for ex. ['chat_type' => 'group'], in this case the listener will be executed only if the
      * message is sent in a group chat.
      * @return MiddlewareCollector
@@ -636,9 +630,8 @@ abstract class ListenerCollector
 
     /**
      * Add cross-request middleware to each listener middleware chain.
-     *
      */
-    protected function feedMiddlewareStack()
+    protected function feedMiddlewareStack(): void
     {
         array_walk_recursive($this->listeners, function ($value) {
             if ($value instanceof Listener) {
@@ -649,8 +642,6 @@ abstract class ListenerCollector
 
     /**
      * Add cross-request middlewares to a listener.
-     * @param Listener $listener
-     * @return Listener
      * @throws DependencyException
      * @throws NotFoundException
      */
@@ -659,6 +650,7 @@ abstract class ListenerCollector
         foreach ($this->middleware as $m) {
             $listener->middleware($m);
         }
+
         return $listener;
     }
 }

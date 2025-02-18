@@ -124,7 +124,7 @@ trait TelegramTrait
      * ]
      * @return PromiseInterface
      */
-    public function sendMessage(string $text, array $opt = [])
+    public function sendMessage(string $text, array $opt = []): PromiseInterface
     {
         $opt = $this->resolveChatId($opt);
         $required = compact("text");
@@ -2319,13 +2319,12 @@ trait TelegramTrait
     }
 
     /**
-     * @param string $method
-     * @param array $params
-     * @param string $class
-     * @param string[] $headers
-     * @return PromiseInterface
+     * @throws \DI\DependencyException
+     * @throws \DI\NotFoundException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function callApi(string $method, array $params = [], string $class = 'Scalar', $headers = ["Content-type" => "application/json"])
+    public function callApi(string $method, array $params = [], string $class = 'Scalar', array $headers = ["Content-type" => "application/json"])
     {
         if ($this->container->get(Config::class)->getParseMode() && !isset($params['parse_mode'])) {
             $params['parse_mode'] = $this->container->get(Config::class)->getParseMode();
@@ -2344,24 +2343,17 @@ trait TelegramTrait
                         $headers = array("Content-Length" => $result->getSize(), "Content-Type" => "multipart/form-data; boundary={$result->getBoundary()}");
                         return $this->wrapPromise($browser->post($method, $headers, $result), $method, $params, $class);
                     });
-                } else {
-                    $multipart = $this->prepareMultipartData($params);
-                    $headers = array("Content-Length" => $multipart->getSize(), "Content-Type" => "multipart/form-data; boundary={$multipart->getBoundary()}");
-                    return $this->wrapPromise($browser->post($method, $headers, $multipart), $method, $params, $class);
                 }
+
+                $multipart = $this->prepareMultipartData($params);
+                $headers = array("Content-Length" => $multipart->getSize(), "Content-Type" => "multipart/form-data; boundary={$multipart->getBoundary()}");
+                return $this->wrapPromise($browser->post($method, $headers, $multipart), $method, $params, $class);
             }
         }
         return $this->wrapPromise($browser->post($method, $headers, json_encode($params)), $method, $params, $class);
     }
 
-    /**
-     *
-     * Create MultipartStream, iterate over params to find InputFile
-     *
-     * @param $params
-     * @return PromiseInterface
-     */
-    private function prepareMultipartDataAsync($params)
+    private function prepareMultipartDataAsync(array $params): PromiseInterface
     {
         $filesystem = $this->container->get(\React\Filesystem\Filesystem::class);
         $multipart_data = [];
@@ -2382,13 +2374,13 @@ trait TelegramTrait
             } else {
                 $data = ['name' => $key];
                 $data['contents'] = is_array($value) ? json_encode($value) : strval($value);
-                array_push($multipart_data, $data);
+                $multipart_data[] = $data;
             }
         }
 
         return all($promises)->then(function ($files) use ($multipart_data) {
             foreach ($files as $key => $value) {
-                array_push($multipart_data, $value);
+                $multipart_data[] = $value;
             }
             return new MultipartStream($multipart_data);
         }, function ($error) {
@@ -2414,7 +2406,7 @@ trait TelegramTrait
             } else {
                 $data['contents'] = is_array($value) ? json_encode($value) : strval($value);
             }
-            array_push($multipart_data, $data);
+            $multipart_data[] = $data;
         }
         return new MultipartStream($multipart_data);
     }
@@ -2475,29 +2467,24 @@ trait TelegramTrait
     {
         // if the user doesn't provide inline_message_id, chat_id or message_id the framework tries to resolve them
         // based on the Update's type
-        if ($this->update) {
-            if (!isset($opt['inline_message_id']) && !isset($opt['chat_id']) && !isset($opt['message_id'])) {
-                if ($this->update->getUpdateType() == CallbackQuery::class) {
-                    $cbQuery = $this->update->getCallbackQuery();
-                    if ($cbQuery->getInlineMessageId()) {
-                        $opt['inline_message_id'] = $cbQuery->getInlineMessageId();
-                    } else if ($cbQuery->getMessage()) {
-                        $opt['message_id'] = $cbQuery->getMessage()->getMessageId();
-                    }
+        if ($this->update && !isset($opt['inline_message_id']) && !isset($opt['chat_id']) && !isset($opt['message_id'])) {
+            if ($this->update->getUpdateType() === CallbackQuery::class) {
+                $cbQuery = $this->update->getCallbackQuery();
+
+                if ($cbQuery && $cbQuery->getInlineMessageId()) {
+                    $opt['inline_message_id'] = $cbQuery->getInlineMessageId();
+                } else if ($cbQuery && $cbQuery->getMessage()) {
+                    $opt['message_id'] = $cbQuery->getMessage()->getMessageId();
                 }
-                // set chat_id only if inline_message_id wasn't set
-                if (!isset($opt['inline_message_id']) && $this->update->getEffectiveChat()) {
-                    $opt['chat_id'] = $this->update->getEffectiveChat()->getId();
-                }
+            }
+            // set chat_id only if inline_message_id wasn't set
+            if (!isset($opt['inline_message_id']) && $this->update->getEffectiveChat()) {
+                $opt['chat_id'] = $this->update->getEffectiveChat()->getId();
             }
         }
         return $opt;
     }
 
-    /**
-     * @param array $opt
-     * @return array
-     */
     public function resolveChatId(array $opt): array
     {
         if (!isset($opt['chat_id']) && $this->update && $this->update->getEffectiveChat()) {
@@ -2505,5 +2492,4 @@ trait TelegramTrait
         }
         return $opt;
     }
-
 }

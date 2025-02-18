@@ -18,21 +18,6 @@ use React\Promise\PromiseInterface;
  */
 class ZanzaraCache
 {
-    /**
-     * @var CacheInterface
-     */
-    private $cache;
-
-    /**
-     * @var ZanzaraLogger
-     */
-    private $logger;
-
-    /**
-     * @var Config
-     */
-    private $config;
-
     private const CHAT_DATA = 'CHAT_DATA';
 
     private const USER_DATA = 'USER_DATA';
@@ -51,39 +36,36 @@ class ZanzaraCache
     }
 
     /**
-     * ZanzaraLogger constructor.
-     * @param CacheInterface $cache
-     * @param ZanzaraLogger $logger
-     * @param Config $config
+     * @TODO Logger is unused
      */
-    public function __construct(CacheInterface $cache, ZanzaraLogger $logger, Config $config)
-    {
-        $this->logger = $logger;
-        $this->cache = $cache;
-        $this->config = $config;
-    }
+    public function __construct(
+        private CacheInterface $cache,
+        private ZanzaraLogger $logger,
+        private Config $config
+    ) {}
 
-    private function resolveKey($dataType, $id, $key): string
+    private function resolveKey(string $dataType, ?int $id, ?string $key): string
     {
-        $res = "$dataType";
+        $result = $dataType;
+
         if ($id) {
-            $res .= "@$id";
+            $result .= "@$id";
         }
+
         if ($key) {
-            $res .= "@$key";
+            $result .= "@$key";
         }
-        return $res;
+
+        return $result;
     }
 
     /**
      * Default ttl is false. That means that user doesn't pass any value, so we use the ttl set in config.
      * If ttl is different from false simply return the ttl, it means that the value is set calling the function.
-     * @param $ttl
-     * @return float|null
      */
-    private function checkTtl($ttl): ?float
+    private function checkTtl(?float $ttl = null): ?float
     {
-        if ($ttl === false) {
+        if ($ttl === null) {
             $ttl = $this->config->getCacheTtl();
         }
         return $ttl;
@@ -111,7 +93,7 @@ class ZanzaraCache
         return $this->cache->get($this->resolveKey(self::CHAT_DATA, $chatId, $key));
     }
 
-    public function setChatDataItem(int $chatId, string $key, $data, $ttl = false): PromiseInterface
+    public function setChatDataItem(int $chatId, string $key, $data, ?float $ttl = null): PromiseInterface
     {
         return $this->cache->set($this->resolveKey(self::CHAT_DATA, $chatId, $key), $data, $this->checkTtl($ttl));
     }
@@ -136,5 +118,4 @@ class ZanzaraCache
     {
         return $this->cache->delete($this->resolveKey(self::USER_DATA, $userId, $key));
     }
-
 }

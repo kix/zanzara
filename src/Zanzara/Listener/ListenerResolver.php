@@ -6,26 +6,19 @@ namespace Zanzara\Listener;
 
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
+use RuntimeException;
 use Zanzara\ConversationManager;
 use Zanzara\Telegram\Type\CallbackQuery;
 use Zanzara\Telegram\Type\Message;
 use Zanzara\Telegram\Type\Update;
 
 /**
- *
+ * @TODO merge/filter methods should be non-destructive
  */
 abstract class ListenerResolver extends ListenerCollector
 {
+    protected ConversationManager $conversationManager;
 
-    /**
-     * @var ConversationManager
-     */
-    protected $conversationManager;
-
-    /**
-     * @param Update $update
-     * @return PromiseInterface
-     */
     public function resolveListeners(Update $update): PromiseInterface
     {
         $deferred = new Deferred();
@@ -33,9 +26,18 @@ abstract class ListenerResolver extends ListenerCollector
         $updateType = $update->getUpdateType();
 
         if ($updateType === CallbackQuery::class) {
-            $chatId = $update->getEffectiveChat() ? $update->getEffectiveChat()->getId() : null;
+            $chatId = $update->getEffectiveChat()?->getId();
+
+            if ($chatId === null) {
+                throw new RuntimeException('Cannot resolve listener without a chat ID');
+            }
             $callbackQuery = $update->getCallbackQuery();
-            $text = $callbackQuery->getMessage() ? $callbackQuery->getMessage()->getText() : null;
+
+            if (!$callbackQuery instanceof CallbackQuery) {
+                throw new RuntimeException('Cannot resolve listener without a callback query');
+            }
+
+            $text = $callbackQuery->getMessage()?->getText();
             $this->conversationManager->getConversationHandler($chatId)
                 ->then(function ($handlerInfo) use ($update, $updateType, $deferred, $callbackQuery, $text, &$listeners) {
                     // if we are not in a conversation, call the listeners as usual
@@ -106,11 +108,7 @@ abstract class ListenerResolver extends ListenerCollector
     }
 
     /**
-     * @param Update $update
      * @param Listener[] $listeners
-     * @param string $listenerType
-     * @param string|null $listenerId
-     * @return Listener|null
      */
     private function findListenerAndPush(Update $update, array &$listeners, string $listenerType, ?string $listenerId = null): ?Listener
     {
@@ -131,11 +129,9 @@ abstract class ListenerResolver extends ListenerCollector
     }
 
     /**
-     * @param Update $update
      * @param Listener[] $listeners
-     * @param string $listenerType
      */
-    private function mergeListenersByType(Update $update, array &$listeners, string $listenerType)
+    private function mergeListenersByType(Update $update, array &$listeners, string $listenerType): void
     {
         $toMerge = $this->listeners[$listenerType] ?? null;
         if ($toMerge) {
@@ -157,5 +153,4 @@ abstract class ListenerResolver extends ListenerCollector
 
         return true;
     }
-
 }

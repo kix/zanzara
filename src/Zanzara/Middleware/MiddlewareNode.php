@@ -13,16 +13,12 @@ use Zanzara\Context;
  */
 class MiddlewareNode
 {
-
     /**
      * @var MiddlewareInterface|callable
      */
     private $current;
 
-    /**
-     * @var MiddlewareNode|null
-     */
-    private $next;
+    private ?MiddlewareNode $next = null;
 
     /**
      * @param MiddlewareInterface|callable $current
@@ -34,10 +30,7 @@ class MiddlewareNode
         $this->next = $next;
     }
 
-    /**
-     * @param Context $ctx
-     */
-    public function __invoke(Context $ctx)
+    public function __invoke(Context $ctx): void
     {
         if ($this->current instanceof MiddlewareInterface) {
             $this->current->handle($ctx, $this->next);
@@ -45,5 +38,4 @@ class MiddlewareNode
             call_user_func($this->current, $ctx, $this->next);
         }
     }
-
 }

@@ -8,57 +8,46 @@ use Closure;
 use Opis\Closure\SerializableClosure;
 use React\Promise\PromiseInterface;
 
-/**
- *
- */
 class ConversationManager
 {
-
     private const CONVERSATION = 'CONVERSATION';
     private const HANDLER_KEY = 'HANDLER';
 
-    /**
-     * @var ZanzaraCache
-     */
-    private $cache;
-
-    /**
-     * @var Config
-     */
-    private $config;
-
-    public function __construct(ZanzaraCache $cache, Config $config)
-    {
-        $this->cache = $cache;
-        $this->config = $config;
-    }
+    public function __construct(
+        private readonly ZanzaraCache $cache,
+        private readonly Config $config
+    ) {}
 
     /**
      * Get key of the conversation by chatId
-     * @param $chatId
-     * @param $key
-     * @return string
      */
-    private function resolveKey($chatId, $key): string
+    private static function resolveKey(?int $chatId = null, ?string $key = null): string
     {
-        $res = self::CONVERSATION . '@' . strval($chatId);
-        if ($key) {
+        $res = self::CONVERSATION . '@' . $chatId;
+
+        if ($key !== null) {
             $res .= "@$key";
         }
+
         return $res;
     }
 
-    public function setConversationHandler($chatId, $handler, bool $skipListeners, bool $skipMiddlewares): PromiseInterface
+    /**
+     * @TODO What gets passed in $handler? `unserialize()` is involved, might be a security issue
+     */
+    public function setConversationHandler(int $chatId, $handler, bool $skipListeners, bool $skipMiddlewares): PromiseInterface
     {
         if ($handler instanceof Closure) {
+            // TODO: Call to 'private SerializableClosure::__construct()' from invalid contex
             $handler = new SerializableClosure($handler);
         }
-        return $this->cache->set($this->resolveKey($chatId, self::HANDLER_KEY), [serialize($handler), $skipListeners, $skipMiddlewares], $this->config->getConversationTtl());
+
+        return $this->cache->set(ConversationManager::resolveKey($chatId, self::HANDLER_KEY), [serialize($handler), $skipListeners, $skipMiddlewares], $this->config->getConversationTtl());
     }
 
-    public function getConversationHandler($chatId): PromiseInterface
+    public function getConversationHandler(int $chatId): PromiseInterface
     {
-        return $this->cache->get($this->resolveKey($chatId, self::HANDLER_KEY))
+        return $this->cache->get(ConversationManager::resolveKey($chatId, self::HANDLER_KEY))
             ->then(function ($conversation) {
                 if (!$conversation) {
                     return null;
@@ -75,12 +64,9 @@ class ConversationManager
 
     /**
      * delete a cache item and return the promise
-     * @param $chatId
-     * @return PromiseInterface
      */
-    public function deleteConversationHandler($chatId): PromiseInterface
+    public function deleteConversationHandler(int $chatId): PromiseInterface
     {
-        return $this->cache->delete($this->resolveKey($chatId, self::HANDLER_KEY));
+        return $this->cache->delete(ConversationManager::resolveKey($chatId, self::HANDLER_KEY));
     }
-
 }

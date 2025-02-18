@@ -10,15 +10,8 @@ use Zanzara\Context;
 use Zanzara\Telegram\Type\CallbackQuery;
 use Zanzara\Zanzara;
 
-/**
- *
- */
 class CallbackQueryTest extends TestCase
 {
-
-    /**
-     *
-     */
     public function testCallbackQuery()
     {
         $config = new Config();
