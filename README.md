@@ -2,6 +2,8 @@
   <img src="https://github.com/badfarm/zanzara/blob/develop/zanzara_logo.png">
 </p>
 
+**NOTE: This is a fork of [the original repository](https://github.com/badfarm/zanzara)**
+
 Asynchronous PHP Telegram Bot Framework built on top of [ReactPHP](https://reactphp.org/)
 
 [![Bot API](https://img.shields.io/badge/Bot%20API-6.6%20(March%202023)-blue)](https://core.telegram.org/bots/api)
