@@ -18,21 +18,6 @@ use React\Promise\PromiseInterface;
  */
 class ZanzaraCache
 {
-    /**
-     * @var CacheInterface
-     */
-    private $cache;
-
-    /**
-     * @var ZanzaraLogger
-     */
-    private $logger;
-
-    /**
-     * @var Config
-     */
-    private $config;
-
     private const CHAT_DATA = 'CHAT_DATA';
 
     private const USER_DATA = 'USER_DATA';
@@ -50,18 +35,11 @@ class ZanzaraCache
         return call_user_func_array([$this->cache, $name], $arguments);
     }
 
-    /**
-     * ZanzaraLogger constructor.
-     * @param CacheInterface $cache
-     * @param ZanzaraLogger $logger
-     * @param Config $config
-     */
-    public function __construct(CacheInterface $cache, ZanzaraLogger $logger, Config $config)
-    {
-        $this->logger = $logger;
-        $this->cache = $cache;
-        $this->config = $config;
-    }
+    public function __construct(
+        private CacheInterface $cache,
+        private ZanzaraLogger $logger,
+        private Config $config
+    ) {}
 
     private function resolveKey($dataType, $id, $key): string
     {

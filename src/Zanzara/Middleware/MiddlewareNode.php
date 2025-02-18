@@ -24,7 +24,6 @@ class MiddlewareNode
     public function __construct($current, private ?MiddlewareNode $next = null)
     {
         $this->current = $current;
-        $this->next = $next;
     }
 
     public function __invoke(Context $ctx): void
