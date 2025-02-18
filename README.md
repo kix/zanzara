@@ -1,10 +1,13 @@
 <p align="center">
-  <img src="https://github.com/badfarm/zanzara/blob/develop/zanzara_logo.png">
+  <img src="https://github.com/kix/zanzara/blob/develop/zanzara_logo.png">
 </p>
+
+Asynchronous PHP Telegram Bot Framework built on top of [ReactPHP](https://reactphp.org/)
 
 **NOTE: This is a fork of [the original repository](https://github.com/badfarm/zanzara)**
 
-Asynchronous PHP Telegram Bot Framework built on top of [ReactPHP](https://reactphp.org/)
+The original maintainer does not seem to actively contribute to the project anymore. If my merge requests
+get accepted, I'll close this down and deprecate it in favour of the original library.
 
 [![Bot API](https://img.shields.io/badge/Bot%20API-6.6%20(March%202023)-blue)](https://core.telegram.org/bots/api)
 [![PHP](https://img.shields.io/badge/PHP-%3E%3D7.4-blue)](https://www.php.net/)
@@ -24,7 +27,7 @@ Asynchronous PHP Telegram Bot Framework built on top of [ReactPHP](https://react
 
 ### Installation
 ```
-composer require badfarm/zanzara
+composer require kix/zanzara
 ```
     
 ### Quickstart
