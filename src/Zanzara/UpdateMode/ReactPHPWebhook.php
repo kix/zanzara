@@ -18,15 +18,8 @@ use Zanzara\Zanzara;
 use Zanzara\ZanzaraLogger;
 use Zanzara\ZanzaraMapper;
 
-/**
- *
- */
 class ReactPHPWebhook extends BaseWebhook
 {
-
-    /**
-     * @var HttpServer
-     */
     private HttpServer $server;
 
     public function __construct(ContainerInterface $container, Zanzara $zanzara, Telegram $telegram, Config $config, ZanzaraLogger $logger, LoopInterface $loop, ZanzaraMapper $zanzaraMapper)

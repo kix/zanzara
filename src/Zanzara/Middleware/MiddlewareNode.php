@@ -28,10 +28,7 @@ class MiddlewareNode
         $this->next = $next;
     }
 
-    /**
-     * @param Context $ctx
-     */
-    public function __invoke(Context $ctx)
+    public function __invoke(Context $ctx): void
     {
         if ($this->current instanceof MiddlewareInterface) {
             $this->current->handle($ctx, $this->next);

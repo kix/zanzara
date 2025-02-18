@@ -50,21 +50,11 @@ use function React\Promise\all;
  */
 trait TelegramTrait
 {
+    protected ContainerInterface $container;
 
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected Browser $browser;
 
-    /**
-     * @var Browser
-     */
-    protected $browser;
-
-    /**
-     * @var Update|null
-     */
-    protected $update;
+    protected ?Update $update;
 
     /**
      * Use this method to receive incoming updates using long polling (wiki). An Array of @see Update objects is returned.

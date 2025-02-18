@@ -8,7 +8,6 @@ use Zanzara\Context;
 
 /**
  * The interface that client's middleware must implement.
- *
  */
 interface MiddlewareInterface
 {
