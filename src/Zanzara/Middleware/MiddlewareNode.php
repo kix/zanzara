@@ -13,22 +13,16 @@ use Zanzara\Context;
  */
 class MiddlewareNode
 {
-
     /**
      * @var MiddlewareInterface|callable
      */
     private $current;
 
     /**
-     * @var MiddlewareNode|null
-     */
-    private $next;
-
-    /**
      * @param MiddlewareInterface|callable $current
      * @param MiddlewareNode|null $next
      */
-    public function __construct($current, ?MiddlewareNode $next = null)
+    public function __construct($current, private ?MiddlewareNode $next = null)
     {
         $this->current = $current;
         $this->next = $next;

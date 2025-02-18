@@ -23,18 +23,12 @@ abstract class MiddlewareCollector
     protected $tip;
 
     /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
      * MiddlewareCollector constructor.
      * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
+    public function __construct(
+        private ContainerInterface $container
+    ) {}
 
     /**
      * Last in, first out.
@@ -51,5 +45,4 @@ abstract class MiddlewareCollector
         $this->tip = $node;
         return $this;
     }
-
 }

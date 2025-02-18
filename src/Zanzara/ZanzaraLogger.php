@@ -20,15 +20,6 @@ use Zanzara\Telegram\Type\Update;
  */
 class ZanzaraLogger
 {
-
-    /**
-     * @var LoggerInterface|null
-     */
-    private ?LoggerInterface $logger;
-
-    /**
-     * @var bool
-     */
     private bool $enabled;
 
     /**
@@ -36,9 +27,10 @@ class ZanzaraLogger
      * @param LoggerInterface|null $logger
      * @param Config|null $config
      */
-    public function __construct(?LoggerInterface $logger, ?Config $config)
-    {
-        $this->logger = $logger;
+    public function __construct(
+        private ?LoggerInterface $logger,
+        ?Config $config
+    ) {
         $this->enabled = !($config->getDisableZanzaraLogger() ?? false);
     }
 

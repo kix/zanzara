@@ -14,19 +14,9 @@ use JsonMapper_Exception;
  */
 class ZanzaraMapper
 {
-
-    /**
-     * @var JsonMapper
-     */
-    private $jsonMapper;
-
-    /**
-     * @param JsonMapper $jsonMapper
-     */
-    public function __construct(JsonMapper $jsonMapper)
-    {
-        $this->jsonMapper = $jsonMapper;
-    }
+    public function __construct(
+        private JsonMapper $jsonMapper
+    ) {}
 
     /**
      * @param string $json

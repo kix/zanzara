@@ -14,14 +14,11 @@ class Telegram
 {
     use TelegramTrait;
 
-    /**
-     * Telegram constructor.
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    protected Browser $browser;
+
+    public function __construct(
+        ContainerInterface $container
+    ) {
         $this->browser = $container->get(Browser::class);
     }
-
 }
