@@ -13,7 +13,6 @@ use Zanzara\Middleware\MiddlewareNode;
 /**
  * Each listener has a middleware chain.
  * On listener instantiation the object itself is set as tip of the middleware stack.
- *
  */
 class Listener extends MiddlewareCollector implements MiddlewareInterface
 {

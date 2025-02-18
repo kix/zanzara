@@ -9,7 +9,6 @@ use Zanzara\Support\CallableResolver;
 
 /**
  * Middleware is a LIFO (Last In First Out) stack.
- *
  */
 abstract class MiddlewareCollector
 {
