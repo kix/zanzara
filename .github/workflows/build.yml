@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -34,8 +33,15 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
-      
+    - uses: php-actions/composer@v6 # or alternative dependency management
     - name: Run test suite
       run: composer run-script test
+
+  phpstan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: php-actions/composer@v6
+    - uses: php-actions/phpstan@v3
+      with:
+        path: src/
