@@ -1,5 +1,5 @@
 {
-    "name": "badfarm/zanzara",
+    "name": "kix/zanzara",
     "type": "library",
     "description": "Asynchronous PHP Telegram Bot Framework",
     "keywords": [
@@ -16,6 +16,9 @@
         },
         {
             "name": "Mattia Corradi"
+        },
+        {
+            "name": "Stepan Anchugov"
         }
     ],
     "scripts": {
