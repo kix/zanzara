@@ -11,21 +11,11 @@ use Zanzara\Telegram\Type\CallbackQuery;
 use Zanzara\Telegram\Type\Message;
 use Zanzara\Telegram\Type\Update;
 
-/**
- *
- */
 abstract class ListenerResolver extends ListenerCollector
 {
 
-    /**
-     * @var ConversationManager
-     */
-    protected $conversationManager;
+    protected ConversationManager $conversationManager;
 
-    /**
-     * @param Update $update
-     * @return PromiseInterface
-     */
     public function resolveListeners(Update $update): PromiseInterface
     {
         $deferred = new Deferred();
@@ -106,11 +96,7 @@ abstract class ListenerResolver extends ListenerCollector
     }
 
     /**
-     * @param Update $update
      * @param Listener[] $listeners
-     * @param string $listenerType
-     * @param string|null $listenerId
-     * @return Listener|null
      */
     private function findListenerAndPush(Update $update, array &$listeners, string $listenerType, ?string $listenerId = null): ?Listener
     {
@@ -131,9 +117,7 @@ abstract class ListenerResolver extends ListenerCollector
     }
 
     /**
-     * @param Update $update
      * @param Listener[] $listeners
-     * @param string $listenerType
      */
     private function mergeListenersByType(Update $update, array &$listeners, string $listenerType)
     {

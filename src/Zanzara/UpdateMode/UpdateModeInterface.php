@@ -7,5 +7,4 @@ namespace Zanzara\UpdateMode;
 interface UpdateModeInterface
 {
     function run(): void;
-
 }
