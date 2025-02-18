@@ -6,6 +6,7 @@ namespace Zanzara\Telegram\Type\InlineQueryResult;
 
 use Zanzara\Telegram\Type\Input\InputMessageContent;
 use Zanzara\Telegram\Type\Keyboard\InlineKeyboardMarkup;
+use Zanzara\Telegram\Type\MessageEntity;
 
 /**
  * Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file
@@ -87,7 +88,7 @@ class InlineQueryResultMpeg4Gif extends InlineQueryResult
      *
      * @since zanzara 0.5.0, Telegram Bot Api 5.0
      *
-     * @var \Zanzara\Telegram\Type\MessageEntity[]|null
+     * @var MessageEntity[]|null
      */
     private $caption_entities;
 
@@ -282,7 +283,7 @@ class InlineQueryResultMpeg4Gif extends InlineQueryResult
     }
 
     /**
-     * @return \Zanzara\Telegram\Type\MessageEntity[]|null
+     * @return MessageEntity[]|null
      */
     public function getCaptionEntities(): ?array
     {
@@ -290,7 +291,7 @@ class InlineQueryResultMpeg4Gif extends InlineQueryResult
     }
 
     /**
-     * @param \Zanzara\Telegram\Type\MessageEntity[]|null $caption_entities
+     * @param MessageEntity[]|null $caption_entities
      */
     public function setCaptionEntities(?array $caption_entities): void
     {

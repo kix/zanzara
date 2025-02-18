@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Zanzara\Telegram\Type;
 
+use JsonSerializable;
+
 /**
  * This object represents a Telegram user or bot.
  *
  * More on https://core.telegram.org/bots/api#user
  */
-class User implements \JsonSerializable
+class User implements JsonSerializable
 {
 
     /**
@@ -283,5 +285,4 @@ class User implements \JsonSerializable
     {
         return json_encode($this, JSON_PRETTY_PRINT);
     }
-
 }

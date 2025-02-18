@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 namespace Zanzara\Telegram\Type\Input;
+use Zanzara\Telegram\Type\MessageEntity;
+
 /**
  * Represents the content of a text message to be sent as the result of an inline query.
  *
@@ -31,7 +33,7 @@ class InputTextMessageContent extends InputMessageContent
      *
      * @since zanzara 0.5.0, Telegram Bot Api 5.0
      *
-     * @var \Zanzara\Telegram\Type\MessageEntity[]|null
+     * @var MessageEntity[]|null
      */
     private $caption_entities;
 
@@ -91,7 +93,7 @@ class InputTextMessageContent extends InputMessageContent
     }
 
     /**
-     * @return \Zanzara\Telegram\Type\MessageEntity[]|null
+     * @return MessageEntity[]|null
      */
     public function getCaptionEntities(): ?array
     {
@@ -99,7 +101,7 @@ class InputTextMessageContent extends InputMessageContent
     }
 
     /**
-     * @param \Zanzara\Telegram\Type\MessageEntity[]|null $caption_entities
+     * @param MessageEntity[]|null $caption_entities
      */
     public function setCaptionEntities(?array $caption_entities): void
     {

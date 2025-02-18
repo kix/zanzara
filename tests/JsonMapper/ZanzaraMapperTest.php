@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Zanzara\Test\JsonMapper;
 
+use JsonMapper;
 use PHPUnit\Framework\TestCase;
 use Zanzara\ZanzaraMapper;
 
@@ -15,7 +16,7 @@ class ZanzaraMapperTest extends TestCase
 
     public function testZanzaraMapper()
     {
-        $mapper = new ZanzaraMapper(new \JsonMapper());
+        $mapper = new ZanzaraMapper(new JsonMapper());
 
         $json = file_get_contents(__DIR__ . '/one.json');
         /** @var Dummy $dummy */

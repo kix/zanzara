@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Zanzara\Test\JsonMapper\Issue;
 
+use Zanzara\Test\JsonMapper\Issue\Element\Element;
+
 class RootObject
 {
 
     /**
-     * @var \Zanzara\Test\JsonMapper\Issue\Element\Element[]
+     * @var Element[]
      */
     private $arrayOfElements;
 
     /**
-     * @return \Zanzara\Test\JsonMapper\Issue\Element\Element[]
+     * @return Element[]
      */
     public function getArrayOfElements(): array
     {
@@ -21,7 +23,7 @@ class RootObject
     }
 
     /**
-     * @param \Zanzara\Test\JsonMapper\Issue\Element\Element[] $arrayOfElements
+     * @param Element[] $arrayOfElements
      */
     public function setArrayOfElements(array $arrayOfElements): void
     {

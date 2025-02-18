@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Zanzara\Telegram;
 
+use Exception;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
+    use React\Filesystem\Filesystem;
 use React\Http\Browser;
 use React\Http\Message\ResponseException;
 use React\Promise\PromiseInterface;
@@ -2353,7 +2355,7 @@ trait TelegramTrait
      */
     private function prepareMultipartDataAsync($params)
     {
-        $filesystem = $this->container->get(\React\Filesystem\Filesystem::class);
+        $filesystem = $this->container->get(Filesystem::class);
         $multipart_data = [];
         $promises = [];
         foreach ($params as $key => $value) {
@@ -2448,7 +2450,7 @@ trait TelegramTrait
                     try {
                         $json = (string)$e->getResponse()->getBody();
                         $e = $mapper->mapJson($json, TelegramException::class);
-                    } catch (\Exception $ignore) {
+                    } catch (Exception $ignore) {
                         // ignore
                     }
                 }
@@ -2495,5 +2497,4 @@ trait TelegramTrait
         }
         return $opt;
     }
-
 }

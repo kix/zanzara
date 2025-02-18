@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace Zanzara\Test\Middleware;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Zanzara\Config;
 use Zanzara\Context;
 use Zanzara\Middleware\MiddlewareInterface;
 use Zanzara\Zanzara;
 
-/**
- *
- */
 class OOPMiddlewareTest extends TestCase
 {
-
     public function testOOPMiddleware()
     {
         $config = new Config();
@@ -48,7 +45,7 @@ class OOPMiddlewareTest extends TestCase
 
     public function testInvalidMiddleware()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $config = new Config();
         $config->setUpdateMode(Config::WEBHOOK_MODE);

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Zanzara\Middleware;
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use Psr\Container\ContainerInterface;
 use Zanzara\Support\CallableResolver;
 
@@ -35,8 +37,8 @@ abstract class MiddlewareCollector
      *
      * @param MiddlewareInterface|callable $middleware
      * @return MiddlewareCollector
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @throws DependencyException
+     * @throws NotFoundException
      */
     public function middleware($middleware): self
     {

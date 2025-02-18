@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Zanzara\Telegram\Type;
 
+use JsonSerializable;
 use Zanzara\Telegram\Type\Passport\PassportData;
 use Zanzara\Telegram\Type\Poll\Poll;
 use Zanzara\Telegram\Type\Poll\PollAnswer;
@@ -17,9 +18,8 @@ use Zanzara\Telegram\Type\WebApp\WebAppData;
  *
  * More on https://core.telegram.org/bots/api#update
  */
-class Update implements \JsonSerializable
+class Update implements JsonSerializable
 {
-
     /**
      * The update's unique identifier. Update identifiers start from a certain positive number and increase sequentially.
      * This ID becomes especially handy if you're using Webhooks, since it allows you to ignore repeated updates or to

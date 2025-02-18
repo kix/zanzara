@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Zanzara;
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use Psr\Container\ContainerInterface;
 use React\EventLoop\LoopInterface;
 use React\Http\Browser;
@@ -127,8 +129,8 @@ class Context
      * callbacks are not executed.
      * @param bool $skipMiddlewares if true, the next conversation handler will be called without apply middlewares
      * @return PromiseInterface
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @throws DependencyException
+     * @throws NotFoundException
      */
     public function nextStep($handler, bool $skipListeners = false, bool $skipMiddlewares = false): PromiseInterface
     {

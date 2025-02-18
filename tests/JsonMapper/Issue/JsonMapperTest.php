@@ -36,5 +36,4 @@ class JsonMapperTest extends TestCase
         $this->assertSame('dummy1', $elements[0]->getField());
         $this->assertSame('dummy2', $elements[1]->getField());
     }
-
 }

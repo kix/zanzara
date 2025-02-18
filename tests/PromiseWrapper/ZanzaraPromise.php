@@ -2,6 +2,7 @@
 
 namespace Zanzara\Test\PromiseWrapper;
 
+use JsonMapper;
 use Psr\Http\Message\ResponseInterface;
 use React\Promise\PromiseInterface;
 use Zanzara\ZanzaraMapper;
@@ -33,7 +34,7 @@ class ZanzaraPromise implements PromiseInterface
     {
         $this->promise = $promise;
         $this->class = $class;
-        $this->zanzaraMapper = new ZanzaraMapper(new \JsonMapper());
+        $this->zanzaraMapper = new ZanzaraMapper(new JsonMapper());
     }
 
     /**

@@ -2,6 +2,9 @@
 
 namespace Zanzara\Test\Listener;
 
+use DI\DependencyException;
+use DI\NotFoundException;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Zanzara\Config;
 use Zanzara\Context;
@@ -59,7 +62,7 @@ class ListenerCallbackTest extends TestCase
      */
     public function testExceptionWithInvalidCallable()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $config = new Config();
         $config->setUpdateMode(Config::WEBHOOK_MODE);
@@ -71,8 +74,8 @@ class ListenerCallbackTest extends TestCase
     }
 
     /**
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @throws DependencyException
+     * @throws NotFoundException
      */
     public function testWithClass()
     {

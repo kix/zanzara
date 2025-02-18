@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 namespace Zanzara\Telegram\Type\Input;
+use Zanzara\Telegram\Type\MessageEntity;
+
 /**
  * Represents an audio file to be treated as music to be sent.
  *
@@ -58,7 +60,7 @@ class InputMediaAudio
      *
      * @since zanzara 0.5.0, Telegram Bot Api 5.0
      *
-     * @var \Zanzara\Telegram\Type\MessageEntity[]|null
+     * @var MessageEntity[]|null
      */
     private $caption_entities;
 
@@ -212,7 +214,7 @@ class InputMediaAudio
     }
 
     /**
-     * @return \Zanzara\Telegram\Type\MessageEntity[]|null
+     * @return MessageEntity[]|null
      */
     public function getCaptionEntities(): ?array
     {
@@ -220,7 +222,7 @@ class InputMediaAudio
     }
 
     /**
-     * @param \Zanzara\Telegram\Type\MessageEntity[]|null $caption_entities
+     * @param MessageEntity[]|null $caption_entities
      */
     public function setCaptionEntities(?array $caption_entities): void
     {

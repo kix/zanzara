@@ -1,13 +1,14 @@
 <?php
 
 use Psr\Http\Message\ServerRequestInterface;
+use React\EventLoop\Loop;
 use React\Http\HttpServer;
 use React\Http\Message\Response;
 use React\Socket\SocketServer;
 
 require __DIR__ . '/../../bootstrap.php';
 
-$loop = \React\EventLoop\Loop::get();
+$loop = Loop::get();
 
 $server = new HttpServer(function (ServerRequestInterface $request) {
     $path = $request->getUri()->getPath();

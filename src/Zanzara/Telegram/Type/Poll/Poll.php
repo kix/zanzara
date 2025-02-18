@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Zanzara\Telegram\Type\Poll;
 
+use Zanzara\Telegram\Type\MessageEntity;
+
 /**
  * This object contains information about a poll.
  *
@@ -87,7 +89,7 @@ class Poll
     /**
      * Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation.
      *
-     * @var \Zanzara\Telegram\Type\MessageEntity[]|null
+     * @var MessageEntity[]|null
      */
     private $explanation_entities;
 
@@ -266,7 +268,7 @@ class Poll
     }
 
     /**
-     * @return \Zanzara\Telegram\Type\MessageEntity[]|null
+     * @return MessageEntity[]|null
      */
     public function getExplanationEntities(): ?array
     {
@@ -274,7 +276,7 @@ class Poll
     }
 
     /**
-     * @param \Zanzara\Telegram\Type\MessageEntity[]|null $explanation_entities
+     * @param MessageEntity[]|null $explanation_entities
      */
     public function setExplanationEntities(?array $explanation_entities): void
     {

@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Zanzara\Telegram\Type;
 
+use JsonSerializable;
+
 /**
  * This object represents a chat.
  *
  * More on https://core.telegram.org/bots/api#chat
  */
-class Chat implements \JsonSerializable
+class Chat implements JsonSerializable
 {
-
     /**
      * Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have
      * difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or
@@ -546,7 +547,7 @@ class Chat implements \JsonSerializable
 
     public function __toString()
     {
-        return json_encode($this, JSON_PRETTY_PRINT);
+        return json_encode($this, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -690,5 +691,4 @@ class Chat implements \JsonSerializable
     {
         $this->has_protected_content = $has_protected_content;
     }
-
 }

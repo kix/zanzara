@@ -11,6 +11,7 @@ use React\Cache\ArrayCache;
 use React\Cache\CacheInterface;
 use React\EventLoop\Loop;
 use React\EventLoop\LoopInterface;
+use React\Filesystem\Filesystem;
 use React\Http\Browser;
 use React\Http\Server;
 use React\Promise\PromiseInterface;
@@ -74,7 +75,7 @@ class Zanzara extends ListenerResolver
         $this->container->set(CacheInterface::class, $this->config->getCache() ?? new ArrayCache());
         $this->container->set(Config::class, $this->config);
         if ($this->config->isReactFileSystem()) {
-            $this->container->set(\React\Filesystem\Filesystem::class, \React\Filesystem\Filesystem::create($this->loop));
+            $this->container->set(Filesystem::class, Filesystem::create($this->loop));
         }
         $this->cache = $this->container->get(ZanzaraCache::class);
         $this->conversationManager = $this->container->get(ConversationManager::class);

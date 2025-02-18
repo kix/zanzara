@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Zanzara\Test\PromiseWrapper;
 
 use PHPUnit\Framework\TestCase;
+use React\EventLoop\Loop;
 use React\Http\Browser;
 use React\Promise\PromiseInterface;
 use Zanzara\Telegram\Type\Update;
@@ -22,7 +23,7 @@ class TestPromiseWrapper extends TestCase
      */
     public function testPromiseWrapper()
     {
-        $loop = \React\EventLoop\Loop::get();
+        $loop = Loop::get();
         $this->send($loop)->then(
             function ($updates) {
                 $this->assertIsArray($updates);

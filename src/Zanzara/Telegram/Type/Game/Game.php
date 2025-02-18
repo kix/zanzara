@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Zanzara\Telegram\Type\Game;
 
 use Zanzara\Telegram\Type\File\Animation;
+use Zanzara\Telegram\Type\File\PhotoSize;
+use Zanzara\Telegram\Type\MessageEntity;
 
 /**
  * This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.
@@ -31,7 +33,7 @@ class Game
     /**
      * Photo that will be displayed in the game message in chats.
      *
-     * @var \Zanzara\Telegram\Type\File\PhotoSize[]
+     * @var PhotoSize[]
      */
     private $photo;
 
@@ -47,7 +49,7 @@ class Game
     /**
      * Optional. Special entities that appear in text, such as usernames, URLs, bot commands, etc.
      *
-     * @var \Zanzara\Telegram\Type\MessageEntity[]|null
+     * @var MessageEntity[]|null
      */
     private $text_entities;
 
@@ -91,7 +93,7 @@ class Game
     }
 
     /**
-     * @return \Zanzara\Telegram\Type\File\PhotoSize[]
+     * @return PhotoSize[]
      */
     public function getPhoto(): array
     {
@@ -99,7 +101,7 @@ class Game
     }
 
     /**
-     * @param \Zanzara\Telegram\Type\File\PhotoSize[] $photo
+     * @param PhotoSize[] $photo
      */
     public function setPhoto(array $photo): void
     {
@@ -123,7 +125,7 @@ class Game
     }
 
     /**
-     * @return \Zanzara\Telegram\Type\MessageEntity[]|null
+     * @return MessageEntity[]|null
      */
     public function getTextEntities(): ?array
     {
@@ -131,7 +133,7 @@ class Game
     }
 
     /**
-     * @param \Zanzara\Telegram\Type\MessageEntity[]|null $text_entities
+     * @param MessageEntity[]|null $text_entities
      */
     public function setTextEntities(?array $text_entities): void
     {

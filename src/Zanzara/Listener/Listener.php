@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Zanzara\Listener;
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use Psr\Container\ContainerInterface;
 use Zanzara\Context;
 use Zanzara\Middleware\MiddlewareCollector;
@@ -43,8 +45,8 @@ class Listener extends MiddlewareCollector implements MiddlewareInterface
      * @param ContainerInterface $container
      * @param string|null $id
      * @param array $filters
-     * @throws \DI\DependencyException
-     * @throws \DI\NotFoundException
+     * @throws DependencyException
+     * @throws NotFoundException
      */
     public function __construct($callback, ContainerInterface $container, ?string $id = null, array $filters = [])
     {

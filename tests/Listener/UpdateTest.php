@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Zanzara\Test\Listener;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Zanzara\Config;
 use Zanzara\Context;
@@ -64,7 +65,7 @@ class UpdateTest extends TestCase
         $bot = new Zanzara("test", $config);
 
         $bot->onCommand('start', function (Context $ctx){
-            throw new \Exception('error!');
+            throw new Exception('error!');
         });
 
         $bot->onException(function (Context $ctx, $exception) {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Zanzara\Telegram\Type\Input;
 
+use Zanzara\Telegram\Type\MessageEntity;
+
 /**
  * Represents a general file to be sent.
  *
@@ -57,7 +59,7 @@ class InputMediaDocument
     /**
      * Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
      *
-     * @var \Zanzara\Telegram\Type\MessageEntity[]
+     * @var MessageEntity[]
      */
     private $caption_entities;
 
@@ -152,7 +154,7 @@ class InputMediaDocument
     }
 
     /**
-     * @return \Zanzara\Telegram\Type\MessageEntity[]
+     * @return MessageEntity[]
      */
     public function getCaptionEntities(): array
     {
@@ -160,7 +162,7 @@ class InputMediaDocument
     }
 
     /**
-     * @param \Zanzara\Telegram\Type\MessageEntity[] $caption_entities
+     * @param MessageEntity[] $caption_entities
      */
     public function setCaptionEntities(array $caption_entities): void
     {

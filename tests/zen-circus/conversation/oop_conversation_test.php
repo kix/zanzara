@@ -1,5 +1,6 @@
 <?php
 
+use React\Cache\ArrayCache;
 use Symfony\Component\Dotenv\Dotenv;
 use Zanzara\Config;
 use Zanzara\Context;
@@ -11,7 +12,7 @@ $dotenv = new Dotenv();
 $dotenv->load("../../../.env");
 
 $config = new Config();
-$config->setCache(new \React\Cache\ArrayCache());
+$config->setCache(new ArrayCache());
 $config->setUpdateMode(Config::POLLING_MODE);
 
 $bot = new Zanzara($_ENV['BOT_TOKEN'], $config);
