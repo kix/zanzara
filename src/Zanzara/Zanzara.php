@@ -19,12 +19,8 @@ use Zanzara\Listener\ListenerResolver;
 use Zanzara\Telegram\Telegram;
 use Zanzara\UpdateMode\ReactPHPWebhook;
 
-/**
- *
- */
 class Zanzara extends ListenerResolver
 {
-
     /**
      * @var Config
      */
@@ -203,5 +199,4 @@ class Zanzara extends ListenerResolver
 
         return true;
     }
-
 }

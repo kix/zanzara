@@ -9,7 +9,6 @@ use Zanzara\Telegram\Type\Update;
 
 class Webhook extends BaseWebhook
 {
-
     /**
      * @inheritDoc
      * @throws JsonMapper_Exception

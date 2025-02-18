@@ -101,5 +101,4 @@ class ReactPHPWebhook extends BaseWebhook
     {
         $this->server = $server;
     }
-
 }

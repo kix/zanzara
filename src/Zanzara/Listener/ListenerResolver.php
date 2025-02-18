@@ -157,5 +157,4 @@ abstract class ListenerResolver extends ListenerCollector
 
         return true;
     }
-
 }

@@ -11,7 +11,6 @@ use Zanzara\Telegram\Type\Webhook\WebhookInfo;
 
 class Polling extends UpdateMode
 {
-
     protected $offset = 1;
 
     /**
@@ -91,5 +90,4 @@ class Polling extends UpdateMode
             }
         });
     }
-
 }

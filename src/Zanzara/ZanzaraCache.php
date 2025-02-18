@@ -136,5 +136,4 @@ class ZanzaraCache
     {
         return $this->cache->delete($this->resolveKey(self::USER_DATA, $userId, $key));
     }
-
 }

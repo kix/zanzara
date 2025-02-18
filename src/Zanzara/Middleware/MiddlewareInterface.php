@@ -11,11 +11,9 @@ use Zanzara\Context;
  */
 interface MiddlewareInterface
 {
-
     /**
      * @param Context $ctx
      * @param $next
      */
     public function handle(Context $ctx, $next);
-
 }

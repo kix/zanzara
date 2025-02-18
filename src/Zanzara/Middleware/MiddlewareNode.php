@@ -9,7 +9,6 @@ use Zanzara\Context;
 /**
  * A node of the middleware stack.
  * The last node is the callback to be executed and does not have a next node.
- *
  */
 class MiddlewareNode
 {
@@ -36,5 +35,4 @@ class MiddlewareNode
             call_user_func($this->current, $ctx, $this->next);
         }
     }
-
 }
