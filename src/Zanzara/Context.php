@@ -67,20 +67,12 @@ class Context
         $this->conversationManager = $container->get(ConversationManager::class);
     }
 
-    /**
-     * @param string $key
-     * @param mixed $value
-     */
-    public function set(string $key, $value): void
+    public function set(string $key, mixed $value): void
     {
         $this->data[$key] = $value;
     }
 
-    /**
-     * @param string $key
-     * @return mixed|null
-     */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         return $this->data[$key] ?? null;
     }
@@ -160,13 +152,8 @@ class Context
      * $ctx->setChatData('age', 21)->then(function($result) {
      *
      * });
-     *
-     * @param $key
-     * @param $data
-     * @param $ttl
-     * @return PromiseInterface
      */
-    public function setChatDataItem(string $key, $data, ?float $ttl = null): PromiseInterface
+    public function setChatDataItem(string $key, mixed $data, ?float $ttl = null): PromiseInterface
     {
         $chatId = $this->update->getEffectiveChat()->getId();
         return $this->cache->setChatDataItem($chatId, $key, $data, $ttl);
@@ -179,11 +166,8 @@ class Context
      * $ctx->deleteChatDataItem('age')->then(function($result) {
      *
      * });
-     *
-     * @param $key
-     * @return PromiseInterface
      */
-    public function deleteChatDataItem($key): PromiseInterface
+    public function deleteChatDataItem(string $key): PromiseInterface
     {
         $chatId = $this->update->getEffectiveChat()->getId();
         return $this->cache->deleteChatDataItem($chatId, $key);
@@ -196,11 +180,8 @@ class Context
      * $ctx->getUserDataItem('age')->then(function($age) {
      *
      * });
-     *
-     * @param $key
-     * @return PromiseInterface
      */
-    public function getUserDataItem($key): PromiseInterface
+    public function getUserDataItem(string $key): PromiseInterface
     {
         $userId = $this->update->getEffectiveUser()->getId();
         return $this->cache->getUserDataItem($userId, $key);
@@ -213,11 +194,8 @@ class Context
      * $ctx->setUserData('age', 21)->then(function($result) {
      *
      * });
-     *
-     * @param mixed $data
-     * @return PromiseInterface
      */
-    public function setUserDataItem(string $key, $data, ?float $ttl = null): PromiseInterface
+    public function setUserDataItem(string $key, mixed $data, ?float $ttl = null): PromiseInterface
     {
         $userId = $this->update->getEffectiveUser()->getId();
         return $this->cache->setUserDataItem($userId, $key, $data, $ttl);
@@ -245,11 +223,8 @@ class Context
      * $ctx->setGlobalData('age', 21)->then(function($result) {
      *
      * });
-     *
-     * @param mixed $data
-     * @return PromiseInterface
      */
-    public function setGlobalDataItem(string $key, $data, ?float $ttl = null): PromiseInterface
+    public function setGlobalDataItem(string $key, mixed $data, ?float $ttl = null): PromiseInterface
     {
         return $this->cache->setGlobalDataItem($key, $data, $ttl);
     }

@@ -26,9 +26,9 @@ class ZanzaraCache
 
     /**
      * Use only to call native method of CacheInterface
-     * @param $name
-     * @param $arguments
-     * @return PromiseInterface
+     * @param string $name
+     * @param array $arguments
+     * @return PromiseInterface|null
      */
     public function __call($name, $arguments): ?PromiseInterface
     {
