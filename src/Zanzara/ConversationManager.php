@@ -36,12 +36,12 @@ class ConversationManager
      */
     public function setConversationHandler(int $chatId, $handler, bool $skipListeners, bool $skipMiddlewares): PromiseInterface
     {
-        return $this->cache->set(ConversationManager::resolveKey($chatId, self::HANDLER_KEY), [serialize($handler), $skipListeners, $skipMiddlewares], $this->config->getConversationTtl());
+        return $this->cache->set(self::resolveKey($chatId, self::HANDLER_KEY), [serialize($handler), $skipListeners, $skipMiddlewares], $this->config->getConversationTtl());
     }
 
     public function getConversationHandler(int $chatId): PromiseInterface
     {
-        return $this->cache->get(ConversationManager::resolveKey($chatId, self::HANDLER_KEY))
+        return $this->cache->get(self::resolveKey($chatId, self::HANDLER_KEY))
             ->then(function ($conversation) {
                 if (!$conversation) {
                     return null;
@@ -59,6 +59,6 @@ class ConversationManager
      */
     public function deleteConversationHandler(int $chatId): PromiseInterface
     {
-        return $this->cache->delete(ConversationManager::resolveKey($chatId, self::HANDLER_KEY));
+        return $this->cache->delete(self::resolveKey($chatId, self::HANDLER_KEY));
     }
 }
