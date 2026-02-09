@@ -25,7 +25,7 @@
         "test": "vendor/bin/phpunit"
     },
     "require": {
-        "php": "^8.0",
+        "php": "^8.3",
         "ext-json": "*",
         "ext-readline": "*",
         "react/event-loop": "^1.3",
