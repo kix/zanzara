@@ -42,7 +42,7 @@ class ConversationManager
     public function getConversationHandler(int $chatId): PromiseInterface
     {
         return $this->cache->get(self::resolveKey($chatId, self::HANDLER_KEY))
-            ->then(function ($conversation) {
+            ->then(static function ($conversation): ?array {
                 if (!$conversation) {
                     return null;
                 }
