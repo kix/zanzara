@@ -8,21 +8,11 @@ use Zanzara\ZanzaraMapper;
 
 class ZanzaraPromise implements PromiseInterface
 {
+    private PromiseInterface $promise;
 
-    /**
-     * @var PromiseInterface
-     */
-    private $promise;
+    private string $class;
 
-    /**
-     * @var string
-     */
-    private $class;
-
-    /**
-     * @var ZanzaraMapper
-     */
-    private $zanzaraMapper;
+    private ZanzaraMapper $zanzaraMapper;
 
     /**
      * PromiseWrapper constructor.
@@ -39,11 +29,11 @@ class ZanzaraPromise implements PromiseInterface
     /**
      * @inheritDoc
      */
-    public function then(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
+    public function then(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null): PromiseInterface
     {
-        $this->promise->then(
+        return $this->promise->then(
             function (ResponseInterface $response) use ($onFulfilled, $onRejected) {
-                $json = (string)$response->getBody();
+                $json = (string) $response->getBody();
                 $onFulfilled($this->zanzaraMapper->mapJson($json, $this->class));
             },
             $onRejected,
@@ -51,4 +41,28 @@ class ZanzaraPromise implements PromiseInterface
         );
     }
 
+    public function catch(callable $onRejected): PromiseInterface
+    {
+        return $this->promise->catch($onRejected);
+    }
+
+    public function finally(callable $onFulfilledOrRejected): PromiseInterface
+    {
+        return $this->promise->finally($onFulfilledOrRejected);
+    }
+
+    public function cancel(): void
+    {
+        $this->promise->cancel();
+    }
+
+    public function otherwise(callable $onRejected): PromiseInterface
+    {
+        return $this->promise->otherwise($onRejected);
+    }
+
+    public function always(callable $onFulfilledOrRejected): PromiseInterface
+    {
+        return $this->promise->always($onFulfilledOrRejected);
+    }
 }
